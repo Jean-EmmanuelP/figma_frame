@@ -64,7 +64,7 @@ export default function FrameViewer({ fragmentHtml, baseWidth, baseHeight, class
   }, [zoom, offset]);
 
   // Fit / Fit width
-  function fit() {
+  const fit = useCallback(() => {
     const vp = viewportRef.current;
     if (!vp) return;
     
@@ -74,22 +74,22 @@ export default function FrameViewer({ fragmentHtml, baseWidth, baseHeight, class
     
     setZoom(Number.isFinite(scale) ? Math.max(0.1, Math.min(scale, 5)) : 1);
     setOffset({ x: 0, y: 0 });
-  }
+  }, [baseWidth, baseHeight]);
 
-  function fitWidth() {
+  const fitWidth = useCallback(() => {
     const vp = viewportRef.current;
     if (!vp) return;
     
     const scale = vp.clientWidth / baseWidth;
     setZoom(Number.isFinite(scale) ? Math.max(0.1, Math.min(scale, 5)) : 1);
     setOffset({ x: 0, y: 0 });
-  }
+  }, [baseWidth]);
 
   // Auto-fit on mount
   useEffect(() => {
     const timer = setTimeout(fit, 100);
     return () => clearTimeout(timer);
-  }, [baseWidth, baseHeight, fit]);
+  }, [fit]);
 
   // Injecte le fragment HTML
   useEffect(() => {
