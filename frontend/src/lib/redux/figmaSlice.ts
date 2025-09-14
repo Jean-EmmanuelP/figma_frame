@@ -107,7 +107,23 @@ const figmaSlice = createSlice({
       }
       state.errors.frameCode = null;
     },
-    selectFrame: (state, action: PayloadAction<{ id: string; data?: typeof initialState.selectedFrame.data }>) => {
+    selectFrame: (state, action: PayloadAction<{ id: string; data?: {
+      name?: string;
+      previewUrl?: string;
+      absoluteBoundingBox?: {
+        width: number;
+        height: number;
+      };
+      fills?: Array<{
+        type: string;
+        color?: {
+          r: number;
+          g: number;
+          b: number;
+          a?: number;
+        };
+      }>;
+    } | null }>) => {
       state.selectedFrame = {
         id: action.payload.id,
         data: action.payload.data || null,
