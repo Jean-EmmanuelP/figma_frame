@@ -18,13 +18,28 @@ class FigmaApiService {
     }
   }
 
-  async getFile(fileKey: string): Promise<FigmaFile> {
+  async getFile(fileKey: string, authHeaders?: Record<string, string>): Promise<FigmaFile> {
+    if (authHeaders) {
+      const { data } = await axios.get(`https://api.figma.com/v1/files/${fileKey}`, {
+        headers: authHeaders
+      });
+      return data;
+    }
+    
     this.initialize();
     const { data } = await this.api!.get(`/files/${fileKey}`);
     return data;
   }
 
-  async getNodes(fileKey: string, nodeIds: string): Promise<{ nodes: Record<string, { document: FigmaNode }> }> {
+  async getNodes(fileKey: string, nodeIds: string, authHeaders?: Record<string, string>): Promise<{ nodes: Record<string, { document: FigmaNode }> }> {
+    if (authHeaders) {
+      const { data } = await axios.get(`https://api.figma.com/v1/files/${fileKey}/nodes`, {
+        headers: authHeaders,
+        params: { ids: nodeIds }
+      });
+      return data;
+    }
+    
     this.initialize();
     const { data } = await this.api!.get(`/files/${fileKey}/nodes`, {
       params: { ids: nodeIds }
@@ -32,11 +47,20 @@ class FigmaApiService {
     return data;
   }
 
-  async getImageUrls(fileKey: string, nodeIds: string[], format = 'png', scale = 2): Promise<Record<string, string>> {
+  async getImageUrls(fileKey: string, nodeIds: string[], authHeaders?: Record<string, string>, format = 'png', scale = 2): Promise<Record<string, string>> {
     if (nodeIds.length === 0) return {};
     
-    this.initialize();
     const ids = nodeIds.join(',');
+    
+    if (authHeaders) {
+      const { data } = await axios.get(`https://api.figma.com/v1/images/${fileKey}`, {
+        headers: authHeaders,
+        params: { ids, format, scale }
+      });
+      return data.images || {};
+    }
+    
+    this.initialize();
     const { data } = await this.api!.get(`/images/${fileKey}`, {
       params: { ids, format, scale }
     });

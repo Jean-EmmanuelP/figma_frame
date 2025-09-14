@@ -23,9 +23,7 @@ export default function RootLayout({
     <html lang="fr" className={`${inter.variable} dark`}>
       <body className="font-inter antialiased">
         <ReduxProvider>
-          <div className="min-h-screen bg-[#0A0A0A] text-[#EAEAEA]">
-            {children}
-          </div>
+          {children}
         </ReduxProvider>
       </body>
     </html>

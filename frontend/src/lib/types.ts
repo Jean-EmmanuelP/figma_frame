@@ -22,3 +22,54 @@ export type CodeResponse = {
 export type ErrorResponse = { 
   error: string 
 };
+
+// OAuth & Figma API types
+export type FigmaFile = {
+  key: string;
+  name: string;
+  thumbnail_url?: string;
+  last_modified?: string;
+};
+
+export type RecentFile = {
+  file_key: string;
+  name: string;
+  thumbnail_url?: string;
+  last_modified?: string;
+  team_name?: string;
+  project_name?: string;
+};
+
+export type FigmaTeam = {
+  id: string;
+  name: string;
+};
+
+export type FigmaProject = {
+  id: string;
+  name: string;
+};
+
+export type TeamProjectsResponse = {
+  projects: FigmaProject[];
+};
+
+export type ProjectFilesResponse = {
+  files: FigmaFile[];
+};
+
+export type RecentFilesResponse = {
+  files: RecentFile[];
+};
+
+export type UserTeamsResponse = {
+  teams: FigmaTeam[];
+  user: FigmaUser;
+};
+
+export type FigmaUser = {
+  id: string;
+  email: string;
+  handle: string;
+  img_url: string;
+};

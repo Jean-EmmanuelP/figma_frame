@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import AnimatedHeadline from './AnimatedHeadline';
 
 interface UrlFormProps {
   initialUrl?: string;
@@ -12,43 +13,61 @@ interface UrlFormProps {
 export default function UrlForm({ initialUrl = '', onSubmit, loading = false, title }: UrlFormProps) {
   const [url, setUrl] = useState(initialUrl);
 
+  // Validation function for Figma URL format
+  const isValidFigmaUrl = (urlString: string): boolean => {
+    try {
+      const urlObj = new URL(urlString.trim());
+      
+      // Check if it's a Figma URL
+      if (urlObj.hostname !== 'www.figma.com') {
+        return false;
+      }
+      
+      // Check if it matches the design format: /design/[fileId]/[fileName]
+      const designPattern = /^\/design\/[a-zA-Z0-9]+\/[^/]+/;
+      
+      return designPattern.test(urlObj.pathname);
+    } catch {
+      return false;
+    }
+  };
+
+  const isUrlValid = isValidFigmaUrl(url);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (url.trim()) {
+    if (url.trim() && isUrlValid) {
       onSubmit(url.trim());
     }
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 sm:gap-8 max-w-[80vw] sm:max-w-none mx-auto">
       {title && (
-        <div className="flex items-center gap-4">
-          <svg width="60" height="52" viewBox="0 0 700 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M247.5 402.5C247.5 374.195 270.445 351.25 298.75 351.25H350V402.5C350 430.805 327.055 453.75 298.75 453.75C270.445 453.75 247.5 430.805 247.5 402.5Z" fill="#0ACF83"/>
-            <path d="M350 300C350 271.696 372.945 248.75 401.25 248.75C429.554 248.75 452.5 271.695 452.5 300C452.5 328.305 429.554 351.25 401.25 351.25C372.945 351.25 350 328.304 350 300Z" fill="#1ABCFE"/>
-            <path d="M247.5 300C247.5 328.305 270.445 351.25 298.75 351.25H350V248.75H298.75C270.445 248.75 247.5 271.695 247.5 300Z" fill="#A259FF"/>
-            <path d="M350 146.25V248.75H401.25C429.555 248.75 452.5 225.805 452.5 197.5C452.5 169.195 429.555 146.25 401.25 146.25H350Z" fill="#FF7262"/>
-            <path d="M247.5 197.5C247.5 225.805 270.445 248.75 298.75 248.75H350V146.25H298.75C270.445 146.25 247.5 169.195 247.5 197.5Z" fill="#F24E1E"/>
-          </svg>
-          <h1 className="text-4xl font-light text-[#EAEAEA] tracking-tight text-left">
-            {title}
-          </h1>
+        <div className="flex items-center gap-3 sm:gap-4 flex-col sm:flex-row text-center sm:text-left">
+          <AnimatedHeadline
+            text={title}
+            delay={0.3}
+            durationPerWord={0.5}
+            stagger={0.12}
+            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-light text-[#EAEAEA] tracking-tight max-w-[80vw] sm:max-w-none mx-auto"
+          />
         </div>
       )}
       
-      <div className="relative w-full">
+      <div className="relative w-full max-w-[80vw] sm:max-w-none mx-auto">
         <form 
           onSubmit={handleSubmit} 
           className="border border-[#333333] rounded-3xl relative z-10 bg-[#111111] text-white"
         >
         <div className="relative z-10 rounded-3xl">
-          <div className="relative flex-1 pl-3">
+          <div className="relative flex-1">
             <textarea
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder="https://www.figma.com/file/..."
+              placeholder="https://www.figma.com/design/..."
               rows={1}
-              className="resize-none placeholder:text-[#666666] border border-gray-300 w-full overflow-auto flex-1 bg-transparent p-3 pb-1.5 pt-[1.3rem] text-md outline-none ring-0 min-h-[10px] rounded-3xl focus:border-none focus:outline-none focus:ring-0"
+              className="resize-none placeholder:text-[#666666] w-full bg-transparent text-sm sm:text-md outline-none ring-0 min-h-[51px] rounded-3xl focus:border-none focus:outline-none focus:ring-0 pr-14 pl-4 py-4"
               disabled={loading}
               required
               onInput={(e) => {
@@ -56,7 +75,7 @@ export default function UrlForm({ initialUrl = '', onSubmit, loading = false, ti
                 target.style.height = 'auto';
                 target.style.height = Math.max(51, target.scrollHeight) + 'px';
               }}
-              style={{ height: '51px', padding: '0.75rem 1rem', border: 'none', outline: 'none', boxShadow: 'none' }}
+              style={{ border: 'none', outline: 'none', boxShadow: 'none' }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                   e.preventDefault();
@@ -66,11 +85,11 @@ export default function UrlForm({ initialUrl = '', onSubmit, loading = false, ti
             />
           </div>
           
-          <div className="absolute top-4 right-2" style={{ marginRight: '0.3em' }}>
+          <div className="absolute top-1/2 right-3 transform -translate-y-1/2">
             <button
               type="submit"
-              disabled={loading || !url.trim()}
-              className="bg-white text-black inline-flex items-center justify-center text-sm font-medium disabled:pointer-events-none disabled:opacity-50 h-8 w-8 rounded-full p-0"
+              disabled={loading || !url.trim() || !isUrlValid}
+              className="bg-white text-black inline-flex items-center justify-center text-sm font-medium disabled:pointer-events-none disabled:opacity-50 h-8 w-8 rounded-full p-0 hover:bg-gray-100 transition-colors"
             >
               {loading ? (
                 <div className="w-4 h-4 border-2 border-black/20 border-t-black rounded-full animate-spin"></div>
@@ -83,6 +102,29 @@ export default function UrlForm({ initialUrl = '', onSubmit, loading = false, ti
           </div>
         </div>
         </form>
+        
+        {/* Validation message */}
+        {url.trim() && !isUrlValid && (
+          <div className="mt-3 p-3 bg-red-500/10 border border-red-500/20 rounded-lg max-w-[80vw] sm:max-w-none mx-auto">
+            <div className="flex items-start gap-2">
+              <svg className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div className="text-sm max-w-[80vw] sm:max-w-none">
+                <p className="text-red-300 font-medium mb-1">Format URL incorrect</p>
+                <p className="text-red-200/80">
+                  Veuillez utiliser une URL Figma au format :<br />
+                  <code className="text-xs bg-red-500/20 px-1 py-0.5 rounded break-all">
+                    https://www.figma.com/design/[fileId]/[fileName]
+                  </code>
+                </p>
+                <p className="text-red-200/60 text-xs mt-1 break-all">
+                  Exemple : https://www.figma.com/design/0WsMTA8BmYHCNOqL6G1GGQ/Untitled
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
