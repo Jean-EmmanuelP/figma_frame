@@ -21,6 +21,9 @@ export interface FigmaBoundingBox {
 export interface FigmaTextStyle {
   fontSize?: number;
   lineHeightPx?: number;
+  fontFamily?: string;
+  fontWeight?: number;
+  letterSpacing?: number;
 }
 
 export interface FigmaNode {
