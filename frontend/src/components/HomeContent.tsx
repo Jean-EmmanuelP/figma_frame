@@ -60,15 +60,15 @@ export default function HomeContent() {
     return (
       <div className="min-h-screen bg-[#0A0A0A] flex flex-col">
         <Navbar />
-        <div className="flex-1 flex items-center justify-center pt-20">
-          <div className="text-center">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-light text-[#EAEAEA] tracking-tight mb-12">
+        <div className="flex-1 flex items-center justify-center pt-20 px-4 sm:px-6">
+          <div className="text-center max-w-[80vw] sm:max-w-none mx-auto">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-light text-[#EAEAEA] tracking-tight mb-12 max-w-[80vw] sm:max-w-none mx-auto">
               Transformez vos designs Figma en code
             </h1>
             
             <button
               onClick={login}
-              className="px-8 py-4 bg-[#666666] hover:bg-[#777777] text-white font-medium rounded-lg transition-all duration-200 text-lg"
+              className="px-8 py-4 bg-[#666666] hover:bg-[#777777] text-white font-medium rounded-lg transition-all duration-200 text-lg max-w-[80vw] sm:max-w-none"
             >
               Se connecter avec Figma
             </button>

@@ -5,9 +5,18 @@ import { fetchProfile, UnauthenticatedError } from './api';
 
 const BASE = process.env.NEXT_PUBLIC_API_URL!;
 
+// Type pour les données utilisateur
+interface FigmaUser {
+  id: string;
+  email: string;
+  handle?: string;
+  img_url?: string;
+  // Ajoutez d'autres propriétés selon votre API
+}
+
 // Cache global pour éviter les rechargements inutiles
 let authCache: {
-  user: any | null;
+  user: FigmaUser | null;
   authenticated: boolean | 'loading';
   lastCheck: number;
 } = {
@@ -78,7 +87,7 @@ export async function logout() {
 
 export function useAuth() {
   const [authenticated, setAuthenticated] = useState<boolean | 'loading'>(authCache.authenticated);
-  const [user, setUser] = useState<any>(authCache.user);
+  const [user, setUser] = useState<FigmaUser | null>(authCache.user);
 
   useEffect(() => {
     console.log('🎯 [AUTH] useAuth hook initializing...');
