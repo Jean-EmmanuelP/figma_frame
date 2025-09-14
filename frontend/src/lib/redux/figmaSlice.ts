@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { FramesResponse, FrameSummary, CodeResponse } from '@/lib/types';
+import { FramesResponse, CodeResponse } from '@/lib/types';
 import { fetchFrames as apiFetchFrames, fetchFrameNode as apiFetchFrameNode, fetchFrameHtml as apiFetchFrameHtml } from '@/lib/api';
 
 export interface FigmaState {
@@ -7,7 +7,23 @@ export interface FigmaState {
   framesData: FramesResponse | null;
   selectedFrame: {
     id: string;
-    data: any;
+    data: {
+      name?: string;
+      previewUrl?: string;
+      absoluteBoundingBox?: {
+        width: number;
+        height: number;
+      };
+      fills?: Array<{
+        type: string;
+        color?: {
+          r: number;
+          g: number;
+          b: number;
+          a?: number;
+        };
+      }>;
+    } | null;
     code: string | null;
   } | null;
   loading: {
@@ -91,7 +107,7 @@ const figmaSlice = createSlice({
       }
       state.errors.frameCode = null;
     },
-    selectFrame: (state, action: PayloadAction<{ id: string; data?: any }>) => {
+    selectFrame: (state, action: PayloadAction<{ id: string; data?: typeof initialState.selectedFrame.data }>) => {
       state.selectedFrame = {
         id: action.payload.id,
         data: action.payload.data || null,

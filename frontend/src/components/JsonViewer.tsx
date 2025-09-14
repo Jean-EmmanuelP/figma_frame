@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 interface JsonViewerProps {
-  data: any;
+  data: Record<string, unknown>;
   className?: string;
 }
 

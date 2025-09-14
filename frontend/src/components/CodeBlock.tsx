@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 
 interface CodeBlockProps {
   code: string;
@@ -55,33 +56,16 @@ export default function CodeBlock({ code, frameId }: CodeBlockProps) {
     }
   };
 
-  const downloadHtml = () => {
-    const blob = new Blob([formattedCode], { type: "text/html" });
-    const href = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = href;
-    link.download = `frame-${frameId}.html`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(href);
-  };
-
-  const openPreview = () => {
-    const blob = new Blob([code], { type: "text/html" });
-    const href = URL.createObjectURL(blob);
-    window.open(href, '_blank');
-    setTimeout(() => URL.revokeObjectURL(href), 1000);
-  };
 
   return (
     <div className="space-y-8 fade-in">
       {/* Action Buttons */}
-      <div className="flex flex-wrap gap-4">
-        <button
+      <div className="flex flex-wrap gap-6">
+        <Button
           onClick={copyToClipboard}
-          className="flex items-center gap-3 px-6 py-3 bg-white text-black 
-                     rounded-xl transition-smooth font-medium"
+          variant="default"
+          size="lg"
+          className="gap-3"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} 
@@ -91,19 +75,20 @@ export default function CodeBlock({ code, frameId }: CodeBlockProps) {
                   } />
           </svg>
           {copied ? 'Copié' : 'Copier'}
-        </button>
+        </Button>
         
-        <button
+        <Button
           onClick={() => window.open('https://build.blackbox.ai/', '_blank')}
-          className="flex items-center gap-3 px-6 py-3 bg-[#111111] border border-[#1F1F1F] text-[#EAEAEA] 
-                     rounded-xl transition-smooth font-medium"
+          variant="secondary"
+          size="lg"
+          className="gap-3"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} 
                   d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
           </svg>
           Ouvrir dans Blackbox
-        </button>
+        </Button>
       </div>
       
       {/* Code Block */}

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { FrameSummary } from '@/lib/types';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { selectFrame } from '@/lib/redux/figmaSlice';
@@ -30,13 +31,14 @@ export default function FrameCard({ frame }: FrameCardProps) {
                       transition-smooth cursor-pointer">
         
         {/* Preview */}
-        <div className="aspect-video bg-[#0A0A0A] rounded-xl mb-6 overflow-hidden border border-[#1F1F1F]">
+        <div className="aspect-video bg-[#0A0A0A] rounded-xl mb-6 overflow-hidden border border-[#1F1F1F] relative">
           {frame.previewUrl ? (
-            <img
+            <Image
               src={frame.previewUrl}
               alt={`Aperçu de ${frame.name}`}
-              className="w-full h-full object-cover transition-smooth group-hover:scale-105"
-              loading="lazy"
+              fill
+              className="object-cover transition-smooth group-hover:scale-105"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-[#666666]">
@@ -47,7 +49,7 @@ export default function FrameCard({ frame }: FrameCardProps) {
                           d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <div className="text-sm font-light">Pas d'aperçu</div>
+                <div className="text-sm font-light">Pas d&apos;aperçu</div>
               </div>
             </div>
           )}

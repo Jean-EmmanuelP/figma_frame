@@ -1,4 +1,4 @@
-import LoadingSpinner from './LoadingSpinner';
+import Image from 'next/image';
 import ErrorMessage from './ErrorMessage';
 import CodeBlock from './CodeBlock';
 
@@ -8,7 +8,23 @@ interface ActionsSectionProps {
   error?: string | null;
   code?: string | null;
   frameId: string;
-  frameData?: any;
+  frameData?: {
+    name?: string;
+    previewUrl?: string;
+    absoluteBoundingBox?: {
+      width: number;
+      height: number;
+    };
+    fills?: Array<{
+      type: string;
+      color?: {
+        r: number;
+        g: number;
+        b: number;
+        a?: number;
+      };
+    }>;
+  };
   className?: string;
 }
 
@@ -28,13 +44,14 @@ export default function ActionsSection({
         {/* Frame Preview */}
         <div className="lg:col-span-2">
           <h2 className="text-2xl font-light text-[#EAEAEA] mb-6">Aperçu de la frame</h2>
-          <div className="aspect-video bg-[#0A0A0A] border border-[#1F1F1F] rounded-2xl overflow-hidden">
+          <div className="aspect-video bg-[#0A0A0A] border border-[#1F1F1F] rounded-2xl overflow-hidden relative">
             {frameData?.previewUrl ? (
-              <img
+              <Image
                 src={frameData.previewUrl}
                 alt={`Aperçu de ${frameData.name || 'la frame'}`}
-                className="w-full h-full object-contain rounded-2xl"
-                loading="lazy"
+                fill
+                className="object-contain rounded-2xl"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 50vw"
               />
             ) : frameData?.absoluteBoundingBox ? (
               <div className="w-full h-full flex items-center justify-center p-8">
@@ -92,29 +109,31 @@ export default function ActionsSection({
         </div>
 
         {/* Generate Button */}
-        <div className="lg:col-span-1">
-          <h3 className="text-xl font-light text-[#EAEAEA] mb-6">Actions</h3>
-          <button
-            onClick={onGenerateHtml}
-            disabled={loading}
-            className="w-full flex items-center justify-center gap-3 h-12 px-6 bg-white text-black font-medium rounded-xl text-sm
-                       transition-smooth disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? (
-              <>
-                <div className="w-4 h-4 border-2 border-black/20 border-t-black rounded-full animate-spin"></div>
-                <span>Génération...</span>
-              </>
-            ) : (
-              <>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} 
-                        d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                </svg>
-                <span>Générer HTML</span>
-              </>
-            )}
-          </button>
+        <div className="lg:col-span-1 flex justify-end">
+          <div>
+            <h3 className="text-xl font-light text-[#EAEAEA] mb-6 text-right">Actions</h3>
+            <button
+              onClick={onGenerateHtml}
+              disabled={loading}
+              className="flex items-center justify-center gap-3 h-12 px-6 bg-white text-black font-medium rounded-xl text-sm
+                         transition-smooth disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-black/20 border-t-black rounded-full animate-spin"></div>
+                  <span>Génération...</span>
+                </>
+              ) : (
+                <>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} 
+                          d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                  </svg>
+                  <span>Générer HTML</span>
+                </>
+              )}
+            </button>
+          </div>
         </div>
       </div>
 

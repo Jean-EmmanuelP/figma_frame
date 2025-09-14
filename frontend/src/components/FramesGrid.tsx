@@ -16,7 +16,7 @@ export default function FramesGrid({ frames }: FramesGridProps) {
           </svg>
         </div>
         <p className="text-lg font-light">Aucune frame trouvée</p>
-        <p className="text-sm text-[#A3A3A3] mt-2">Vérifiez l'URL de votre fichier Figma</p>
+        <p className="text-sm text-[#A3A3A3] mt-2">Vérifiez l&apos;URL de votre fichier Figma</p>
       </div>
     );
   }
