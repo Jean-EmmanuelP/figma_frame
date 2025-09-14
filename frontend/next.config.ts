@@ -4,8 +4,11 @@ export default {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'figma-alpha-api.s3.us-west-2.amazonaws.com',
+        hostname: '**',
       },
     ],
+    unoptimized: false,
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 }
