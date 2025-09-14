@@ -4,6 +4,7 @@ import healthRoutes from './health';
 import authRoutes from './auth';
 import sidebarRoutes from './sidebar';
 import meRoutes from './me';
+import debugRoutes from './debug';
 
 const router = Router();
 
@@ -12,5 +13,6 @@ router.use('/health', healthRoutes);
 router.use('/auth', authRoutes);
 router.use('/me', sidebarRoutes);
 router.use('/me', meRoutes);
+router.use('/debug', debugRoutes);
 
 export default router;

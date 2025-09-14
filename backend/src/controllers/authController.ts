@@ -17,7 +17,15 @@ export class AuthController {
       response_type: 'code'
     });
 
-    res.redirect(`https://www.figma.com/oauth?${params.toString()}`);
+    // ⚠️ Save session BEFORE redirect (critical for production)
+    req.session.save((err) => {
+      if (err) {
+        console.error('Session save error:', err);
+        res.status(500).json({ error: 'Failed to save session' });
+        return;
+      }
+      res.redirect(`https://www.figma.com/oauth?${params.toString()}`);
+    });
   }
 
   async oAuthCallback(req: Request, res: Response): Promise<void> {
@@ -66,10 +74,16 @@ export class AuthController {
       req.session.userId = userId;
       delete req.session.oauth_state;
 
-      res.redirect(process.env.NODE_ENV === 'production' 
-        ? process.env.FRONTEND_URL || '/' 
-        : 'http://localhost:3001'
-      );
+      // Save session after OAuth success
+      req.session.save((err) => {
+        if (err) {
+          console.error('Session save error after OAuth:', err);
+        }
+        res.redirect(process.env.NODE_ENV === 'production' 
+          ? process.env.FRONTEND_URL || '/' 
+          : 'http://localhost:3001'
+        );
+      });
     } catch (error: any) {
       console.error('OAuth callback error:', error);
       res.status(400).json({ error: 'Token exchange failed' });

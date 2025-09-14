@@ -10,6 +10,9 @@ dotenv.config();
 
 const app = express();
 
+// Trust proxy for Render (behind proxy)
+app.set('trust proxy', 1);
+
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
     ? [process.env.FRONTEND_URL || 'https://yourdomain.com']
