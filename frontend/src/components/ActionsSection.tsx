@@ -24,7 +24,7 @@ interface ActionsSectionProps {
         a?: number;
       };
     }>;
-  };
+  } | null;
   className?: string;
 }
 
