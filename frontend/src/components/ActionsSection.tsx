@@ -152,7 +152,7 @@ export default function ActionsSection({
       {code && (
         <div className="space-y-6">
           <h3 className="text-2xl font-light text-[#EAEAEA]">Code HTML généré</h3>
-          <CodeBlock code={code} frameId={frameId} />
+          <CodeBlock code={code} />
         </div>
       )}
     </div>
