@@ -1,4 +1,4 @@
-const BASE = process.env.NEXT_PUBLIC_API_BASE!;
+const BASE = process.env.NEXT_PUBLIC_API_URL!;
 
 export async function fetchFrames(url: string) {
   const r = await fetch(`${BASE}/frames?url=${encodeURIComponent(url)}`, { cache: "no-store" });
