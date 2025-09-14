@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useAuth } from '@/lib/auth';
 import {
   DropdownMenu,
@@ -49,10 +50,12 @@ export default function Navbar() {
               <DropdownMenuTrigger className="flex items-center gap-3 hover:opacity-80 transition-opacity duration-200">
                 {user?.img_url ? (
                   <>
-                    <img
+                    <Image
                       src={user.img_url}
                       alt={user.handle || user.email || 'User'}
-                      className="w-8 h-8 rounded-full border border-[#333333]"
+                      width={32}
+                      height={32}
+                      className="rounded-full border border-[#333333]"
                     />
                     <span className="text-sm text-[#EAEAEA] hidden sm:block">
                       {user.handle || user.email}

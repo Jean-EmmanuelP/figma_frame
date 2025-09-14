@@ -5,10 +5,10 @@ import { Button } from '@/components/ui/button';
 
 interface CodeBlockProps {
   code: string;
-  frameId: string;
+  // frameId: string; // Removed as it's not used
 }
 
-export default function CodeBlock({ code, frameId }: CodeBlockProps) {
+export default function CodeBlock({ code }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
 
   // Format HTML with proper indentation

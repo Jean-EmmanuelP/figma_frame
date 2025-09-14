@@ -9,8 +9,8 @@ import HeroSection from "@/components/HeroSection";
 import ResultsSection from "@/components/ResultsSection";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { AppSidebar } from "@/components/AppSidebar";
-import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar";
+// import { AppSidebar } from "@/components/AppSidebar";
+// import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar";
 
 export default function HomeContent() {
   const dispatch = useAppDispatch();
@@ -19,7 +19,6 @@ export default function HomeContent() {
   const [currentInputUrl, setCurrentInputUrl] = useState("");
 
   const {
-    currentUrl,
     framesData,
     loading: { frames: loading },
     errors: { frames: error },
@@ -31,11 +30,11 @@ export default function HomeContent() {
     setCurrentInputUrl(figmaUrl);
   };
 
-  const handlePickFile = ({ fileKey, name }: { fileKey: string; name?: string }) => {
-    const figmaUrl = `https://www.figma.com/design/${fileKey}/${name ? encodeURIComponent(name) : 'Selected'}`;
-    setCurrentInputUrl(figmaUrl);
-    handleFetchFrames(figmaUrl);
-  };
+  // const handlePickFile = ({ fileKey, name }: { fileKey: string; name?: string }) => {
+  //   const figmaUrl = `https://www.figma.com/design/${fileKey}/${name ? encodeURIComponent(name) : 'Selected'}`;
+  //   setCurrentInputUrl(figmaUrl);
+  //   handleFetchFrames(figmaUrl);
+  // };
 
 
   // Loading state

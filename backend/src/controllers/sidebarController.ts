@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import axios from 'axios';
-import database from '../services/database';
+import { addTeam, listTeams } from '../dao';
 
 export class SidebarController {
   async getRecentFiles(req: Request, res: Response): Promise<void> {
@@ -23,7 +23,7 @@ export class SidebarController {
         return;
       }
 
-      await database.addTeamForUser(req.userId!, teamId, teamName);
+      await addTeam(req.userId!, teamId, teamName);
       res.json({ success: true });
     } catch (error: any) {
       console.error('Add team error:', error);
@@ -33,7 +33,7 @@ export class SidebarController {
 
   async getTeams(req: Request, res: Response): Promise<void> {
     try {
-      const teams = await database.getTeamsForUser(req.userId!);
+      const teams = await listTeams(req.userId!);
       res.json({ teams });
     } catch (error: any) {
       console.error('Get teams error:', error);

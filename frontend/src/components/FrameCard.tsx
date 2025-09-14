@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { FrameSummary } from '@/lib/types';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { useAppDispatch } from '@/lib/redux/hooks';
 import { selectFrame } from '@/lib/redux/figmaSlice';
 
 interface FrameCardProps {

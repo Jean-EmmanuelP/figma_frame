@@ -89,7 +89,7 @@ export default function FrameViewer({ fragmentHtml, baseWidth, baseHeight, class
   useEffect(() => {
     const timer = setTimeout(fit, 100);
     return () => clearTimeout(timer);
-  }, [baseWidth, baseHeight]);
+  }, [baseWidth, baseHeight, fit]);
 
   // Injecte le fragment HTML
   useEffect(() => {

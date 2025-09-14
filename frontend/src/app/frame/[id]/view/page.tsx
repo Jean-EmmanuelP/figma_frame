@@ -74,7 +74,7 @@ export default function FrameViewerPage() {
               </svg>
             </div>
             <h1 className="text-xl font-medium text-[#EAEAEA] mb-2">URL Figma manquante</h1>
-            <p className="text-[#A3A3A3] mb-6">Veuillez d'abord sélectionner un fichier Figma depuis l'accueil</p>
+            <p className="text-[#A3A3A3] mb-6">Veuillez d&apos;abord sélectionner un fichier Figma depuis l&apos;accueil</p>
             <Link 
               href="/" 
               className="inline-flex items-center gap-2 text-[#3B82F6] hover:text-[#2563EB] transition-all duration-200"

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { ChevronRight, File, Folder, FileText, User } from 'lucide-react';
 import { fetchUserTeams, fetchTeamProjects, fetchProjectFiles } from '@/lib/api';
 import { FigmaProject, FigmaFile, FigmaTeam, FigmaUser, UserTeamsResponse, TeamProjectsResponse, ProjectFilesResponse } from '@/lib/types';
@@ -279,10 +280,12 @@ export function AppSidebar({ authenticated, onPickFile }: AppSidebarProps) {
               <SidebarMenuButton className="w-full justify-start">
                 <div className="flex items-center space-x-3 w-full">
                   {user.img_url ? (
-                    <img 
+                    <Image 
                       src={user.img_url} 
-                      alt={user.handle}
-                      className="w-8 h-8 rounded-full"
+                      alt={user.handle || 'User'}
+                      width={32}
+                      height={32}
+                      className="rounded-full"
                     />
                   ) : (
                     <div className="w-8 h-8 rounded-full bg-[#1F1F1F] flex items-center justify-center">

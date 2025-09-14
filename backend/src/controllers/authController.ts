@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import crypto from 'crypto';
 import axios from 'axios';
-import database from '../services/database';
+import { upsertUser, saveTokens, deleteTokens, loadTokens } from '../dao';
 import { FigmaOAuthTokenResponse, FigmaUser } from '../types/auth';
 
 export class AuthController {
@@ -48,12 +48,20 @@ export class AuthController {
       const userData: FigmaUser = userResponse.data;
       const userId = userData.id;
 
-      await database.saveToken(
+      // Upsert user
+      await upsertUser(userId, userData.email);
+
+      // Save tokens
+      const expiresAt = tokenData.expires_in 
+        ? Math.floor(Date.now() / 1000) + tokenData.expires_in 
+        : Math.floor(Date.now() / 1000) + 3600;
+
+      await saveTokens({
         userId,
-        tokenData.access_token,
-        tokenData.refresh_token,
-        tokenData.expires_in
-      );
+        accessToken: tokenData.access_token,
+        refreshToken: tokenData.refresh_token,
+        expiresAt
+      });
 
       req.session.userId = userId;
       delete req.session.oauth_state;
@@ -73,7 +81,7 @@ export class AuthController {
 
     try {
       if (userId) {
-        await database.deleteToken(userId);
+        await deleteTokens(userId);
       }
     } catch (error) {
       console.error('Delete token error:', error);

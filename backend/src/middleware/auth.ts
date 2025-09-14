@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import database from '../services/database';
+import { loadTokens } from '../dao';
 import { requireToken } from '../utils/env';
 
 export async function requireAuth(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -11,21 +11,22 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
       return;
     }
 
-    const tokenData = await database.getToken(sessionUserId);
+    const tokenData = await loadTokens(sessionUserId);
     
     if (!tokenData) {
       res.status(401).json({ error: 'No valid token found' });
       return;
     }
 
-    // Check if token is expired
-    if (tokenData.expiresAt < Date.now()) {
+    // Check if token is expired (PostgreSQL stores in epoch seconds)
+    const nowInSeconds = Math.floor(Date.now() / 1000);
+    if (tokenData.expires_at < nowInSeconds) {
       // TODO: Implement token refresh logic here
       res.status(401).json({ error: 'Token expired' });
       return;
     }
 
-    req.userToken = tokenData.accessToken;
+    req.userToken = tokenData.access_token;
     req.userId = sessionUserId;
     
     next();

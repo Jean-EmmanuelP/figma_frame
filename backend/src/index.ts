@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import routes from './routes/index';
 import { getPort } from './utils/env';
 import { sessionMiddleware } from './middleware/session';
+import { migrate } from './migration';
 
 dotenv.config();
 
@@ -22,7 +23,9 @@ app.use('/', routes);
 
 const port = getPort();
 
-app.listen(port, () => {
+// Run migration before starting server
+migrate().then(() => {
+  app.listen(port, () => {
   console.log(`🚀 Figma Frames API running on http://localhost:${port}`);
   console.log('📋 Available endpoints:');
   console.log('  GET /health - Health check');
@@ -34,4 +37,8 @@ app.listen(port, () => {
   console.log('  GET /frames?url=<figma-url> - List frames (optional auth)');
   console.log('  GET /frames/:id?url=<figma-url> - Get frame details (optional auth)');
   console.log('  GET /frames/:id/code?url=<figma-url> - Generate frame HTML (optional auth)');
+  });
+}).catch(error => {
+  console.error("Failed to start server:", error);
+  process.exit(1);
 });
