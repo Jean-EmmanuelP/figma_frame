@@ -5,7 +5,22 @@ import JsonViewer from './JsonViewer';
 interface PreviewSectionProps {
   loading?: boolean;
   error?: string | null;
-  frameData?: {\n    name?: string;\n    absoluteBoundingBox?: {\n      width: number;\n      height: number;\n    };\n    fills?: Array<{\n      type: string;\n      color?: {\n        r: number;\n        g: number;\n        b: number;\n        a?: number;\n      };\n    }>;\n  };
+  frameData?: {
+    name?: string;
+    absoluteBoundingBox?: {
+      width: number;
+      height: number;
+    };
+    fills?: Array<{
+      type: string;
+      color?: {
+        r: number;
+        g: number;
+        b: number;
+        a?: number;
+      };
+    }>;
+  };
   className?: string;
 }
 
