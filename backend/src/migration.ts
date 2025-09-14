@@ -23,6 +23,28 @@ export async function migrate() {
         label TEXT,
         PRIMARY KEY (user_id, team_id)
       );
+
+      CREATE TABLE IF NOT EXISTS user_sessions (
+        sid VARCHAR NOT NULL COLLATE "default",
+        sess JSON NOT NULL,
+        expire TIMESTAMP(6) NOT NULL
+      )
+      WITH (OIDS=FALSE);
+    `);
+
+    // Add primary key constraint only if it doesn't exist
+    await pool.query(`
+      DO $$ 
+      BEGIN
+        IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'session_pkey') THEN
+          ALTER TABLE user_sessions ADD CONSTRAINT session_pkey PRIMARY KEY (sid) NOT DEFERRABLE INITIALLY IMMEDIATE;
+        END IF;
+      END $$;
+    `);
+
+    // Create index if not exists
+    await pool.query(`
+      CREATE INDEX IF NOT EXISTS IDX_session_expire ON user_sessions (expire);
     `);
     
     console.log("✅ DB ready");
